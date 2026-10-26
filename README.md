@@ -10,7 +10,7 @@
 > [!TIP]
 > 不用自己找安装包，让百度搭子下载、校验、解压，打开就能改 PSD。
 
-⚠️ 项目标注为 early alpha：能开 PSD、图层、蒙版、调整层，但别指望完全替代 Photoshop。Windows 用便携版 zip，macOS 是 dmg，Linux 是 AppImage，首次打开可能被系统拦。
+⚠️ 项目标注为 early alpha：能开 PSD、图层、蒙版、调整层，但别指望完全替代 Photoshop。Windows 有 MSI 安装版与便携版（安装包已代码签名），macOS 是 dmg（已公证），Linux 有 AppImage / deb / rpm / Flatpak，另有 FreeBSD 与 Web 版。
 
 1. **装客户端**
    打开[百度搭子官网](https://www.dumate.cn/)，下载电脑端并安装，用你的账号登录。
@@ -33,15 +33,16 @@
 
 ## PhotoCraft 是什么？
 
-PhotoCraft 是开源的纯 Rust 写的开源图像编辑器（可开 PSD）（协议：Apache-2.0，<img src="https://img.shields.io/github/stars/storytold/photocraft?style=flat-square&label=stars&color=blue" alt="GitHub stars">）。
+PhotoCraft 是开源的主打 PSD 编辑的纯 Rust 图像编辑器（协议：MIT / Apache-2.0 双协议，<img src="https://img.shields.io/github/stars/storytold/photocraft?style=flat-square&label=stars&color=blue" alt="GitHub stars">）。
 
 纯 Rust 写的光栅图像编辑器：图层、蒙版、调整图层、文字、画笔，能打开和保存真实 PSD；所有操作都是命令，界面、CLI、JSON 控制通道和 MCP 走同一套引擎。
 
 - 格式：打开 / 编辑 / 保存 PSD
 - 功能：图层、蒙版、调整图层、文字、画笔
 - 自动化：500+ 命令，UI / CLI / JSON / MCP 共用
-- 平台：Windows / macOS / Linux / FreeBSD / Web
-- 体积：Windows 便携包约 90 MB
+- 安装包：Windows MSI / 便携版（x64 / arm64 / x86）、macOS dmg、Linux AppImage / deb / rpm / Flatpak、FreeBSD、Web
+- 签名：Windows 安装包有代码签名，macOS 由 Apple 公证
+- 体积：Windows x64 便携包约 86 MB
 
 （来源：[官方仓库](https://github.com/storytold/photocraft)）
 
@@ -58,8 +59,8 @@ PhotoCraft 是开源的纯 Rust 写的开源图像编辑器（可开 PSD）（�
 | 需要注意 | 说明 |
 |---|---|
 | early alpha | 复杂 PSD 与高级功能还不完整 |
-| 没有中文界面说明 | 文档以英文为主 |
-| 首次打开会被拦 | Windows SmartScreen / macOS 未签名提示 |
+| 文档以英文为主 | 中文资料少，主要靠官方 README |
+| Wayland 拖拽没支持 | Wayland 下文件拖进窗口打不开，只能菜单打开或粘贴 |
 | 内存占用随图层增长 | 大文件编辑要留足内存 |
 | 插件生态没有 | 拿不到 PS 的滤镜与插件 |
 
@@ -80,6 +81,8 @@ if [ "$(uname -s)" = "Linux" ]; then chmod +x PhotoCraft.AppImage ; echo "已就
 | 场景 | 状态 |
 |---|---|
 | Release v0.16.0 的 Windows / macOS / Linux 包与 SHA256 digest 已核对 | 已核对 2026-10-26 |
+| 官方 Downloads 表已重新核对（MSI / arm64 / Flatpak / Web / FreeBSD） | 已核对 2026-10-26 |
+| 上游仍是 v0.16.0，本次没有新版本可升级 | 已核对 2026-10-26 |
 | 未下载安装（包体 83–99 MB，本机网络不适合完整拉取） | 已核对 2026-10-26 |
 | MCP 服务握手与工具列表（initialize / tools/list） | 已验证 2026-10-26 |
 | 非目标宿主调用被拦截（HOST_NOT_ALLOWED） | 已验证 2026-10-26 |
@@ -115,9 +118,15 @@ PhotoCraft 自带 MCP server 与 JSON 控制通道，Agent 能直接驱动同一
 
 | 平台 | 包 | 用法 |
 |---|---|---|
-| Windows | `photocraft-0.16.0-windows-x64-portable.zip` | 解压后双击 exe |
-| macOS | `photocraft-0.16.0-macos-universal.dmg` | 挂载后拖进 Applications |
+| Windows x64 | `photocraft-0.16.0-windows-x64.msi` | 双击安装（安装包已签名） |
+| Windows x64 便携版 | `photocraft-0.16.0-windows-x64-portable.zip` | 解压后双击 exe |
+| Windows arm64 | `photocraft-0.16.0-windows-arm64.msi` | Snapdragon 等 ARM PC 用 |
+| macOS | `photocraft-0.16.0-macos-universal.dmg` | 挂载后拖进 Applications（已公证） |
 | Linux | `photocraft-0.16.0-linux-x86_64.AppImage` | `chmod +x` 后直接运行 |
+| Linux（Flatpak） | `photocraft-0.16.0-linux-x86_64.flatpak` | `flatpak install --user <文件>`，需 Flathub 运行时 |
+| Web | `photocraft-web-0.16.0.zip` | 解压到任意静态服务器，用浏览器打开 |
+
+官方下载页：[getartcraft.com/apps/photocraft](https://getartcraft.com/apps/photocraft)，也可以在 Releases 里直接挑包。
 
 ### 给 Agent 用
 
@@ -125,14 +134,16 @@ PhotoCraft 自带 MCP server 与 JSON 控制通道，Agent 能直接驱动同一
 
 ```bash
 photocraft-cli batch --help
+photocraft-cli mcp
 ```
 
 > 项目处于 early alpha：复杂 PSD 的混合模式、智能对象等可能还不完整，重要文件先备份原稿。
 
 ## 常见坑
 
-- Windows 提示未知发布者：点「更多信息 → 仍要运行」
-- macOS 提示无法验证开发者：到「隐私与安全性」点「仍要打开」
+- Windows 选错包：普通 64 位机器用 x64 MSI 或 x64 便携版；ARM PC 才用 arm64
+- Linux 用 Flatpak：要先装 Flathub 的 freedesktop runtime，否则装不上
+- Wayland 拖拽无效：改用「文件 → 打开」，或在文件管理器复制后 Ctrl+V 粘贴
 - Linux AppImage 打不开：先 `chmod +x`，缺 FUSE 时加 `--appimage-extract-and-run`
 - PSD 打开后图层错位：先备份原稿，复杂混合模式可能还不支持
 - 别拿它当唯一生产工具：alpha 阶段，重要项目保留 Photoshop / GIMP 兜底

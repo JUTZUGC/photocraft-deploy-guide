@@ -5,17 +5,18 @@
     "key": "photocraft",
     "nameCn": "PhotoCraft",
     "repoName": "photocraft-deploy-guide",
-    "oneLiner": "纯 Rust 写的开源图像编辑器（可开 PSD）",
+    "oneLiner": "主打 PSD 编辑的纯 Rust 图像编辑器",
     "officialRepo": "https://github.com/storytold/photocraft",
     "officialDocs": "https://github.com/storytold/photocraft#downloads",
     "stars": "73.1k",
-    "license": "Apache-2.0",
+    "license": "MIT / Apache-2.0 双协议",
     "highlights": [
       "格式：打开 / 编辑 / 保存 PSD",
       "功能：图层、蒙版、调整图层、文字、画笔",
       "自动化：500+ 命令，UI / CLI / JSON / MCP 共用",
-      "平台：Windows / macOS / Linux / FreeBSD / Web",
-      "体积：Windows 便携包约 90 MB"
+      "安装包：Windows MSI / 便携版（x64 / arm64 / x86）、macOS dmg、Linux AppImage / deb / rpm / Flatpak、FreeBSD、Web",
+      "签名：Windows 安装包有代码签名，macOS 由 Apple 公证",
+      "体积：Windows x64 便携包约 86 MB"
     ],
     "mcpSupport": "PhotoCraft 自带 MCP server 与 JSON 控制通道，Agent 能直接驱动同一套命令。本仓库的 MCP 只提供下载、校验与常见坑。",
     "webuiUrl": "",
@@ -24,6 +25,14 @@
     "verification": [
       [
         "Release v0.16.0 的 Windows / macOS / Linux 包与 SHA256 digest 已核对",
+        "已核对 2026-10-26"
+      ],
+      [
+        "官方 Downloads 表已重新核对（MSI / arm64 / Flatpak / Web / FreeBSD）",
+        "已核对 2026-10-26"
+      ],
+      [
+        "上游仍是 v0.16.0，本次没有新版本可升级",
         "已核对 2026-10-26"
       ],
       [
@@ -54,8 +63,9 @@
       "source": "https://github.com/storytold/photocraft/releases/latest"
     },
     "pitfalls": [
-      "Windows 提示未知发布者：点「更多信息 → 仍要运行」",
-      "macOS 提示无法验证开发者：到「隐私与安全性」点「仍要打开」",
+      "Windows 选错包：普通 64 位机器用 x64 MSI 或 x64 便携版；ARM PC 才用 arm64",
+      "Linux 用 Flatpak：要先装 Flathub 的 freedesktop runtime，否则装不上",
+      "Wayland 拖拽无效：改用「文件 → 打开」，或在文件管理器复制后 Ctrl+V 粘贴",
       "Linux AppImage 打不开：先 `chmod +x`，缺 FUSE 时加 `--appimage-extract-and-run`",
       "PSD 打开后图层错位：先备份原稿，复杂混合模式可能还不支持",
       "别拿它当唯一生产工具：alpha 阶段，重要项目保留 Photoshop / GIMP 兜底",
