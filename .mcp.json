@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "photocraft-guide": {
+      "command": "node",
+      "args": [
+        "mcp-server.mjs"
+      ]
+    }
+  }
+}

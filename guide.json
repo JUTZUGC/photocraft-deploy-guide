@@ -1,0 +1,101 @@
+{
+  "owner": "JUTZUGC",
+  "code": "JUTZUGC",
+  "project": {
+    "key": "photocraft",
+    "nameCn": "PhotoCraft",
+    "repoName": "photocraft-deploy-guide",
+    "oneLiner": "纯 Rust 写的开源图像编辑器（可开 PSD）",
+    "officialRepo": "https://github.com/storytold/photocraft",
+    "officialDocs": "https://github.com/storytold/photocraft#downloads",
+    "stars": "73.1k",
+    "license": "Apache-2.0",
+    "highlights": [
+      "格式：打开 / 编辑 / 保存 PSD",
+      "功能：图层、蒙版、调整图层、文字、画笔",
+      "自动化：500+ 命令，UI / CLI / JSON / MCP 共用",
+      "平台：Windows / macOS / Linux / FreeBSD / Web",
+      "体积：Windows 便携包约 90 MB"
+    ],
+    "mcpSupport": "PhotoCraft 自带 MCP server 与 JSON 控制通道，Agent 能直接驱动同一套命令。本仓库的 MCP 只提供下载、校验与常见坑。",
+    "webuiUrl": "",
+    "adapterPorts": "",
+    "collectedAt": "2026-10-26",
+    "verification": [
+      [
+        "Release v0.16.0 的 Windows / macOS / Linux 包与 SHA256 digest 已核对",
+        "已核对 2026-10-26"
+      ],
+      [
+        "未下载安装（包体 83–99 MB，本机网络不适合完整拉取）",
+        "已核对 2026-10-26"
+      ],
+      [
+        "MCP 服务握手与工具列表（initialize / tools/list）",
+        "已验证 2026-10-26"
+      ],
+      [
+        "非目标宿主调用被拦截（HOST_NOT_ALLOWED）",
+        "已验证 2026-10-26"
+      ]
+    ],
+    "deploy": {
+      "type": "binary",
+      "steps": [
+        "if [ \"$(uname -s)\" = \"Darwin\" ]; then curl -fL -o PhotoCraft.dmg https://github.com/storytold/photocraft/releases/download/v0.16.0/photocraft-0.16.0-macos-universal.dmg ; want=489e00a7fd19f7e924a3a05ec33c7b057ea4766129b4eef132ce82ff42c10619 ; file=PhotoCraft.dmg ; else curl -fL -o PhotoCraft.AppImage https://github.com/storytold/photocraft/releases/download/v0.16.0/photocraft-0.16.0-linux-x86_64.AppImage ; want=fc670139091e661e948a6de1ff2219a6dd04232e6ac8616349ee238a7a49d54e ; file=PhotoCraft.AppImage ; fi",
+        "if command -v sha256sum >/dev/null 2>&1; then echo \"$want  $file\" | sha256sum -c - ; else echo \"$want  $file\" | shasum -a 256 -c - ; fi",
+        "if [ \"$(uname -s)\" = \"Linux\" ]; then chmod +x PhotoCraft.AppImage ; echo \"已就绪：./PhotoCraft.AppImage\" ; else echo \"已下载 PhotoCraft.dmg，双击挂载后拖进 Applications\" ; fi"
+      ],
+      "stepsPs": [
+        "curl.exe -L --fail -o PhotoCraft.zip https://github.com/storytold/photocraft/releases/download/v0.16.0/photocraft-0.16.0-windows-x64-portable.zip",
+        "$h = (Get-FileHash -Algorithm SHA256 PhotoCraft.zip).Hash.ToLower() ; if ($h -ne '3e634f7e3cc95476c369d59ef0cfed3d1dd6fafd3c351ad81a4ddf3bd792e99d') { throw \"SHA256 校验失败，文件可能不完整，请重试\" }",
+        "Expand-Archive -Path PhotoCraft.zip -DestinationPath PhotoCraft -Force ; Write-Host '已解压到 PhotoCraft 目录，双击其中的 exe 启动'"
+      ],
+      "source": "https://github.com/storytold/photocraft/releases/latest"
+    },
+    "pitfalls": [
+      "Windows 提示未知发布者：点「更多信息 → 仍要运行」",
+      "macOS 提示无法验证开发者：到「隐私与安全性」点「仍要打开」",
+      "Linux AppImage 打不开：先 `chmod +x`，缺 FUSE 时加 `--appimage-extract-and-run`",
+      "PSD 打开后图层错位：先备份原稿，复杂混合模式可能还不支持",
+      "别拿它当唯一生产工具：alpha 阶段，重要项目保留 Photoshop / GIMP 兜底",
+      "命令行找不到：`photocraft-cli` 在 Release 的单独压缩包里"
+    ]
+  },
+  "gate": {
+    "allow": [
+      "dumate"
+    ],
+    "label": "百度搭子",
+    "url": "https://www.dumate.cn/",
+    "guideUrl": "https://github.com/JUTZUGC/photocraft-deploy-guide",
+    "howToFix": [
+      "1. 打开 https://www.dumate.cn/ ，下载并安装「百度搭子」电脑端（Windows / macOS）",
+      "2. 用账号登录",
+      "3. 在对话窗口发送：你好，帮我从 github 部署 JUTZUGC/photocraft-deploy-guide 到我的电脑上",
+      "4. 部署完成后，在同一对话窗口里继续使用"
+    ],
+    "hint": "请改用「百度搭子」部署后再使用；本工具没有网页版入口。",
+    "onError": "allow"
+  },
+  "keywords": [
+    "PhotoCraft 安装",
+    "Photoshop 免费替代",
+    "PSD 编辑 开源",
+    "Rust 图像编辑器",
+    "开源 PS",
+    "PhotoCraft 中文",
+    "PSD 打开 工具",
+    "修图软件 免费",
+    "PhotoCraft 教程",
+    "photocraft deploy guide"
+  ],
+  "topics": [
+    "image-editor",
+    "photoshop",
+    "psd",
+    "rust",
+    "graphics",
+    "open-source"
+  ]
+}
